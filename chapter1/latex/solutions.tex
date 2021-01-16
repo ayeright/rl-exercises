@@ -53,7 +53,9 @@
 %\newpage
 %\pagenumbering{arabic}
 
-\section{Exercise 1.1: Self-Play}
+\section{RL Book}
+
+\subsection{Exercise 1.1: Self-Play}
 
 \textbf{Suppose, instead of playing against a random opponent, the reinforcement learning algorithm described above played against itself, with both sides learning. What do you think would happen in this case? Would it learn a different policy for selecting moves?}
 \\ \\
@@ -71,7 +73,7 @@ Here the second player is trying to win by putting three Os on the bottom row wi
 \\ \\
 In fact, we implemented the code for the reinforcement learning algorithm playing against itself and after a significant period of learning almost half the games finished in only five moves (three for the first player, two for the second), which is the minimum possible. Therefore, the algorithm learned very short-sighted policies which only work when it has the first move. A human who knows the rules of the game would never allow the algorithm to win after only five moves and it would have to learn more sophisticated policies to maximise reward.
 
-\section{Exercise 1.2: Symmetries}
+\subsection{Exercise 1.2: Symmetries}
 
 \textbf{Many tic-tac-toe positions appear different but are really the same because of symmetries. How might we amend the learning process described above to take advantage of this? In what ways would this change improve the learning process? Now think again. Suppose the opponent did not take advantage of symmetries. In that case, should we? Is it true, then, that symmetrically equivalent positions should necessarily have the same value?}
 \\ \\
@@ -83,14 +85,14 @@ In contrast, if player O is not taking advantage of symmetries then she could le
 As the value of a state clearly depends on the opponent's policy, symmetrically equivalent states should only have the same value if the opponent's policy is the same for those symmetrically equivalent states. This should be true for skilled human opponents, but for the general player or indeed another reinforcement learning algorithm there is no guarantee of this.
 
 
-\section{Exercise 1.3: Greedy Plan}
+\subsection{Exercise 1.3: Greedy Plan}
 
 \textbf{Suppose the reinforcement learning player was greedy, that is, it always played the move that brought it to the position that it rated the best. Might it learn to play better, or worse, than a nongreedy player? What problems might occur?}
 \\ \\
 It would likely play worse than a nongreedy player. To begin with, all non-terminal states have value 0.5, so the greedy player has to select moves randomly. She could get lucky and win from a suboptimal board state, in which case the move would be reinforced and the player could become locked into that move whenever she encountered the possibility of moving into the same state again. Alternatively, the greedy player could be unlucky and lose from a good board state, in which case the state's value would be reduced and moves which led to that state may never be chosen again.
 
 
-\section{Exercise 1.4: Learning from Exploration}
+\subsection{Exercise 1.4: Learning from Exploration}
 
 \textbf{Suppose learning updates occurred after all moves, including exploratory moves. If the step-size parameter is appropriately reduced over time (but not the tendency to explore), then the state values would converge to a different set of probabilities. What (conceptually) are the two sets of probabilities computed when we do, and when we do not, learn from exploratory moves? Assuming that we do continue to make exploratory moves, which set of probabilities might be better to learn? Which would result in more wins?}
 \\ \\
@@ -100,7 +102,7 @@ For example, consider a board state with two empty spaces (and thus two possible
 \\ \\
 Assuming that we do continue to make exploratory moves, the probabilities which are learned from both greedy and exploratory moves would be better to learn and lead to more wins because, as discussed above, they are the true probabilities of winning when making exploratory moves and as such they define the optimal policy for this scenario.
 
-\section{Exercise 1.5: Other Improvements}
+\subsection{Exercise 1.5: Other Improvements}
 
 \textbf{Can you think of other ways to improve the reinforcement learning player? Can you think of any better way to solve the tic-tac-toe problem as posed?}
 \\ \\
@@ -113,6 +115,38 @@ As discussed in the solution to Exercise 1.1, setting the value of draws to 0, t
 To speed up learning the algorithm could play $n$ games in parallel. Once all $n$ games terminated the $n$ different value functions would be averaged and this mean value function would be used as the initial value function in the next round of $n$ games.
 \\ \\
 Alternatively, we could try to solve the problem using a search tree or a meta-heuristic such as a genetic algorithm or particle swarm optimisation, but we do not believe that these methods would perform better that the reinforcement learning algorithm, which is able to converge to an optimal policy.
+
+\section{RL Tutorial}
+
+\subsection{Problem 1}
+
+\textbf{How is Reinforcement Learning different from Supervised Learning?}
+\\ \\
+In supervised learning we have a set of input-output pairs. Each output tells us the ``correct answer" for the corresponding input, and we use these examples to learn a mapping from inputs to outputs. The goal is to learn such a mapping which minimises the generalisation error on new, unseen data.
+\\ \\
+In reinforcement learning we instead learn a policy which maps states to actions. States are analogous to inputs in supervised learning, but in this case we do not have outputs which indicate how to act in each state. Instead we have a numerical reward signal which gives some feedback about the goodness of the action. This signal may be stochastic and rewards may be delayed. The goal is to learn a policy which maximises the total long-term reward. For this we must trade-off exploration and exploitation to find the best actions and then use that information to act in a way that maximises the reward. 
+\\ \\
+The comparison \href{https://www.analyticsvidhya.com/blog/2017/01/introduction-to-reinforcement-learning-implementation/}{here} is flawed because it claims that in reinforcement learning there is no direct mapping. In fact, the policy which we try to learn is a mapping from states to actions, the difference is that we need to explore the actions space to find the best policy. 
+
+\subsection{Problem 2}
+
+\textbf{Provide two different examples of applications of Reinforcement Learning in the industry. What aspects of these problems make them solvable by Reinforcement Learning?}
+\\ \\
+Where I work we are trying to develop an RL system which controls email and push notifications to our customers. This problem is well-suited to RL because a notification that we send today may not have any apparent immediate impact, but may lead to the customer buying something next week. The rewards can therefore be delayed. For the same reason it is also difficult to construct a training set for supervised learning which indicates whether each notification was successful or not. Instead, we need to send many notifications to many customers in a trial-and-error fashion in order to discover the policy which maximises the long-term reward for the business. 
+\\ \\
+Another potential application where I work is using RL to control customer discounts. Here the goal is to maximise the total spent by the customer over his or her lifetime. Again the rewards may be delayed because offering someone a discount today may actually lead to an immediate loss in revenue if the customer was going to buy the product anyway, but the discount may strengthen the customer's affinity for the company which could lead to future purchases. This type of long-term strategy would be difficult to learn without some form of trial-and-error over an extended time period. 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \end{document}
